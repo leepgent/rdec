@@ -2,28 +2,13 @@ from django.db import models
 from django.conf import settings
 
 
-class League(models.Model):
-    name = models.CharField(max_length=100)
-
-    def __str__(self):
-        return self.name
-
-
-class LeagueAffiliation(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL)
-    league = models.ForeignKey('League')
-    is_event_admin = models.BooleanField(default=False)
-
-    def __str__(self):
-        admin_token = ' (A)' if self.is_event_admin else ''
-        return '{}/{}{}'.format(self.user, self.league, admin_token)
-
-
 class Event(models.Model):
-    league = models.ForeignKey('League')
     name = models.CharField(max_length=100)
     location = models.CharField(max_length=100)
     date = models.DateTimeField()
+
+    def __str__(self):
+        return '{} at {} on {}'.format(self.name, self.location, self.date)
 
 
 class EventRole(models.Model):
@@ -40,11 +25,20 @@ class EventAttending(models.Model):
     event = models.ForeignKey('Event')
     role = models.ForeignKey('EventRole')
 
+    def __str__(self):
+        return 'attending {} as {}'.format(self.event, self.role)
+
 
 class LeagueMemberEventAttending(EventAttending):
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
+
+    def __str__(self):
+        return '{} {}'.format(self.user, super(LeagueMemberEventAttending, self).__str__())
 
 
 class VisitorEventAttending(EventAttending):
     name = models.CharField(max_length=100)
     contact_details = models.CharField(max_length=100)
+
+    def __str__(self):
+        return 'Visitor {} {}'.format(self.name, super(VisitorEventAttending, self).__str__())

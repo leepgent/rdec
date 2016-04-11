@@ -1,0 +1,38 @@
+{% extends 'rdec/root.html' %}
+{% block head %}
+    <style type="text/css">
+    .squashed {
+        max-width: 300px;
+    }
+    </style>
+{% endblock %}
+{% block body %}
+    <h1>Roller Derby Event Coordinator</h1>
+    <h2>Sign up to the {{ LEAGUE_NAME }} RDEC</h2>
+    
+    <form method='post' action="{% url 'signup' %}" class="form-horizontal squashed">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="email_field" class="sr-only">Email address</label>
+        <input type="email" name="email_field" class="form-control" placeholder="Email address" required autofocus>
+    </div>
+
+        <div class="form-group">
+        <label for="name_field" class="sr-only">Your Name</label>
+        <input type="text" name="name_field" class="form-control" placeholder="Your name (Derby or Real!)" required>
+        </div>
+            <div class="form-group">
+        <label for="password1_field" class="sr-only">Password</label>
+        <input type="password" name="password1_field" class="form-control" placeholder="Password" required>
+    </div>
+                <div class="form-group">
+        <label for="password2_field" class="sr-only">Verify Password</label>
+        <input type="password" name="password2_field" class="form-control" placeholder="Verify password" required>
+    </div>
+
+        <input type="hidden" name="next" value="{{ next }}" />
+
+        <button class="btn btn-default btn-block" type="submit">Join</button>
+      </form>
+    
+{% endblock %}

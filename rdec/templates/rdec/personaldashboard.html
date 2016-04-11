@@ -1,16 +1,11 @@
-{% load tz %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Personal Dashboard</title>
-</head>
-<body>
-<h1>Dashboard for {{ user.firstname }} ({{ user.email }})</h1>
+{% extends 'rdec/root.html' %}
+{% block body %}
+<h1>Roller Derby Event Coordinator</h1>
+    <h2>Upcoming Events for {{ user.first_name }}</h2>
 
-{% for league, events in league2events.items %}
-    <h2>{{ league.name }}</h2>
-    <table>
+
+    <div class="table-responsive">
+            <table class="table table-hover table-condensed">
         <thead>
         <tr>
             <th>Event</th>
@@ -26,10 +21,10 @@
         <td>{{ event.date }}</td>
         <td>{{ event.location }}</td>
         <td>
-            <select title='Attending' id="{{ event.id }}">
-            <option value="N/A">N/A</option>
+            <select title='Attending' id="{{ event.id }}" class='attending_changer'>
+            <option value="null">N/A</option>
             {% for role in roles %}
-                <option value="{{ role }}">{{ role }}</option>
+                <option value="{{ role.id }}">{{ role }}</option>
             {% endfor %}
             </select>
         </td>
@@ -38,8 +33,30 @@
 
         </tbody>
     </table>
+    </div>
 
-{% endfor %}
 
-</body>
-</html>
+
+
+{% endblock %}
+
+{% block script %}
+    <script>
+    $(".attending_changer").change(function() {
+       var new_value = $(this).val();
+        var payload = {
+            'event_id': $(this).attr('id'),
+            'new_status': new_value,
+            'csrfmiddlewaretoken': '{{ csrf_token }}'
+        };
+        $.ajax('{% url 'change_attending' %}', {
+            method: 'POST',
+            data: payload
+        }).done(function(data) {
+
+        }).fail(function() {
+            alert('nope');
+        });
+    });
+    </script>
+{% endblock %}

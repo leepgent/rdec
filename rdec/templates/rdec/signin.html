@@ -1,0 +1,40 @@
+{% extends 'rdec/root.html' %}
+{% block body %}
+<h1>Roller Derby Event Coordinator</h1>
+    <h2>Sign in or sign up to the {{ LEAGUE_NAME }} RDEC</h2>
+        <div class="panel panel-default">
+            <div class="panel-heading">Existing User?</div>
+            <div class="panel-body">
+
+                <form method="post" action="{% url 'hello' %}">
+                    {% csrf_token %}
+
+                    <div class="form-group">
+                        <label for="username_field">E-Mail Address</label>
+                        <input class="form-control" id="username_field" maxlength="30"
+                               name="username_field" placeholder="E-mail address" type="text"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password_field">Password</label>
+                        <input class="form-control" id="password_field" maxlength="30"
+                               name="password_field" placeholder="Password" type="password"/>
+                    </div>
+
+                    <input type="hidden" name="next" value="{{ next }}"/>
+
+                    <input type="submit" class="btn btn-default" value="Login"/>
+
+                </form>
+
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">New User?</div>
+            <div class="panel-body">
+                <a class="btn btn-default" href="{% url 'signup' %}?next={{ next }}" title="Join {{ LEAGUE_NAME }} RDEC">Join
+                    the {{ LEAGUE_NAME }} RDEC!</a>
+            </div>
+        </div>
+{% endblock %}
