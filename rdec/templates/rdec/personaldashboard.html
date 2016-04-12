@@ -22,7 +22,7 @@
         <td>{{ event.location }}</td>
         <td>
             <select title='Attending' id="{{ event.id }}" class='attending_changer'>
-            <option value="null">N/A</option>
+            <option value="null">(no info)</option>
             {% for role in roles %}
                 <option value="{{ role.id }}" {% if role.id == response.role_id %}selected{% endif %}>{{ role }}</option>
             {% endfor %}
