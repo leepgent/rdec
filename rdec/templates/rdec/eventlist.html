@@ -18,7 +18,7 @@
         {% for event, roledata in eventmap.items %}
             <tr>
             <td><a href="{% url 'eventdetails' event.name|slugify event.id %}">{{ event.name }}</a></td>
-            <td>{{ event.date }}</td>
+            <td>{{ event.date|date:"D d F Y, f a" }}</td>
             <td>{{ event.location }}</td>
             {% for role, typedata in roledata.items %}
                 <td>{{ typedata.members|length }} {% if typedata.visitors %}+ {{ typedata.visitors|length }}V {% endif %}</td>

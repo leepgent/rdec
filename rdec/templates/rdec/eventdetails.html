@@ -1,7 +1,7 @@
 {% extends 'rdec/root.html' %}
 {% block body %}
 <h1>Roller Derby Event Coordinator</h1>
-<h2>{{ event.name }} at {{ event.location }}, {{ event.date }}</h2>
+<h2>{{ event.name }} at {{ event.location }}, {{ event.date|date:"D d F Y, f a" }}</h2>
     {% for role, details in eventmap.items %}
         <h3>{{ role }}</h3>
             <div class="table-responsive">
