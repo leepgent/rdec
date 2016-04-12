@@ -38,7 +38,7 @@ class LeagueMemberEventAttending(EventAttending):
 
 class VisitorEventAttending(EventAttending):
     name = models.CharField(max_length=100)
-    contact_details = models.CharField(max_length=100)
+    contact_details = models.CharField(max_length=100, blank=True)
 
     def __str__(self):
         return 'Visitor {} {}'.format(self.name, super(VisitorEventAttending, self).__str__())

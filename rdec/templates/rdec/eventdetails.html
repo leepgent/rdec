@@ -1,0 +1,31 @@
+{% extends 'rdec/root.html' %}
+{% block body %}
+<h1>Roller Derby Event Coordinator</h1>
+<h2>{{ event.name }} at {{ event.location }}, {{ event.date }}</h2>
+    {% for role, details in eventmap.items %}
+        <h3>{{ role }}</h3>
+            <div class="table-responsive">
+                <table class="table table-hover table-condensed">
+            <tbody>
+
+
+        {% for person in details.members %}
+            <tr>
+                <td>{{ person.user.first_name }}</td>
+            </tr>
+
+        {% endfor %}
+        {% for person in details.visitors %}
+        <tr>
+        <td>
+            {{ person.name }} (Visitor{% if person.contact_details %} - {{ person.contact_details }}{%endif%})
+        </td>
+        </tr>
+
+        {% endfor %}
+            </tbody>
+        </table>
+        </div>
+    {% endfor %}
+
+{% endblock %}
