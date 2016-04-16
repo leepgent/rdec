@@ -15,16 +15,25 @@
         </tr>
         </thead>
         <tbody>
-    {% for event, response in events.items %}
+    {% for event_attendence in event_attendences %}
         <tr>
-        <td>{{ event.name }}</td>
-        <td>{{ event.date|date:"D d F Y, f a" }}</td>
-        <td>{{ event.location }}</td>
+        <td>{{ event_attendence.event.name }}</td>
+        <td>{{ event_attendence.event.date|date:"D d F Y, f a" }}</td>
+        <td>{{ event_attendence.event.location }}</td>
         <td>
-            <select title='Attending' id="{{ event.id }}" class='attending_changer'>
+            <select title='Attending' id="{{ event_attendence.event.id }}" class='attending_changer'>
             <option value="null">(no info)</option>
             {% for role in roles %}
-                <option value="{{ role.id }}" {% if role.id == response.role_id %}selected{% endif %}>{{ role }}</option>
+                <option value="{{ role.id }}"
+                        {% if event_attendence.response %}
+                            {% if role.id == event_attendence.response.role_id %}
+                                selected
+                            {% endif %}
+
+                        {% endif %}
+                    >
+                    {{ role }}
+                </option>
             {% endfor %}
             </select>
         </td>

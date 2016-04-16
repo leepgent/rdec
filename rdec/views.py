@@ -12,6 +12,11 @@ from django.views.generic import View
 from rdec.models import EventRole, Event, LeagueMemberEventAttending
 
 
+class _EventAndAttendence(object):
+    def __init__(self, event):
+        self.event = event
+        self.response = None
+
 @login_required
 def personal_dashboard(request):
     now = timezone.now()
@@ -20,18 +25,22 @@ def personal_dashboard(request):
     # show my attendance info
 
     events = Event.objects.filter(date__gt=now).order_by('date')
-    event_map = dict()
+    event_attendences = list()
+
     for event in events:
-        response = event.leaguemembereventattending_set.filter(user=user)
-        if response.exists():
-            response = response[0]
-        else:
-            response = None
-        event_map[event] = response
+        b = _EventAndAttendence(event)
+
+        try:
+            b.response = event.leaguemembereventattending_set.get(user=user)
+        except LeagueMemberEventAttending.DoesNotExist:
+            pass
+
+        event_attendences.append(b)
+
 
     context = {
         'roles': EventRole.objects.all(),
-        'events': event_map # Event.objects.filter(date__gt=now).order_by('date')
+        'event_attendences': event_attendences
     }
 
     return render(request, 'rdec/personaldashboard.html', context)
