@@ -140,6 +140,12 @@ class ChangeAttendingView(View):
         # I need user (from request), event id from payload, new attending status (or null for removal)
 
 
+class _EventSummary(object):
+    def __init__(self, event):
+        self.event = event
+        self.role_map = dict()
+
+
 @login_required
 def eventlist(request):
     now = timezone.now()
@@ -148,21 +154,25 @@ def eventlist(request):
     events = Event.objects.filter(date__gt=now).order_by('date')
     roles = EventRole.objects.all()
 
-    eventmap = dict()
+    eventlist = list()
+
     for event in events:
-        eventmap[event] = dict()
+        es = _EventSummary(event)
+
         for role in roles:
-            eventmap[event][role] = dict()
-            eventmap[event][role]['members'] = list()
-            eventmap[event][role]['visitors'] = list()
+            es.role_map[role] = dict()
+            es.role_map[role]['members'] = list()
+            es.role_map[role]['visitors'] = list()
         for member_attending in event.leaguemembereventattending_set.all():
-            eventmap[event][member_attending.role]['members'].append(member_attending)
+            es.role_map[member_attending.role]['members'].append(member_attending)
         for visitor_attending in event.visitoreventattending_set.all():
-            eventmap[event][visitor_attending.role]['visitors'].append(visitor_attending)
+            es.role_map[visitor_attending.role]['visitors'].append(visitor_attending)
+
+        eventlist.append(es)
 
     context = {
         'roles': roles,
-        'eventmap': eventmap
+        'eventlist': eventlist
     }
     return render(request, 'rdec/eventlist.html', context)
 
