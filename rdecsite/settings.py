@@ -80,7 +80,7 @@ WSGI_APPLICATION = 'rdecsite.wsgi.application'
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
 DATABASES = {
-    'default': dj_database_url.config()
+    'default': dj_database_url.config(default='sqlite:///rdec.db')
 }
 
 
