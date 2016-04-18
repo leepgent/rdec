@@ -16,7 +16,10 @@
             <th>Date</th>
             <th>Location</th>
             <th>Attending As</th>
-            <th>test ignore</th>
+            <th>last changed</th>
+            <th>is recent</th>
+            <th>since change</th>
+            <th>cutoff</th>
         </tr>
         </thead>
         <tbody>
@@ -43,6 +46,9 @@
             </select>
         </td>
         <td>{{ event_attendance.event.last_modified|date:"D d F Y, f a"  }}</td>
+        <td>{{ event_attendance.is_recent  }}</td>
+        <td>{{ event_attendance.elapsed  }}</td>
+        <td>{{ recency_cutoff_secs  }}</td>
         </tr>
     {% endfor %}
 

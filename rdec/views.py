@@ -18,6 +18,7 @@ class _EventAndAttendance(object):
         self.event = event
         self.response = None
         self.is_recent = False
+        self.elapsed = 0
 
 
 @login_required
@@ -36,6 +37,7 @@ def personal_dashboard(request):
         b = _EventAndAttendance(event)
         elapsed = (now - event.last_modified)
         b.is_recent = elapsed.total_seconds() < recency_cutoff_secs
+        b.elapsed = elapsed.total_seconds()
         try:
             b.response = event.leaguemembereventattending_set.get(user=user)
         except LeagueMemberEventAttending.DoesNotExist:
@@ -46,7 +48,9 @@ def personal_dashboard(request):
     context = {
         'roles': EventRole.objects.all(),
         'event_attendances': event_attendances,
-        'recency_cutoff': settings.RECENT_EVENT_CUTOFF_DAYS
+        'recency_cutoff': settings.RECENT_EVENT_CUTOFF_DAYS,
+        'recency_cutoff_secs': recency_cutoff_secs
+
     }
 
     return render(request, 'rdec/personaldashboard.html', context)
