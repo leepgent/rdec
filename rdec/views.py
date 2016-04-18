@@ -28,7 +28,7 @@ def personal_dashboard(request):
     # for every future event:
     # show my attendance info
 
-    recency_cutoff_secs = settings.RECENT_EVENT_CUTOFF_DAYS * 24 * 60 * 60
+    recency_cutoff_secs = float(settings.RECENT_EVENT_CUTOFF_DAYS) * 24 * 60 * 60
 
     events = Event.objects.filter(date__gt=now).order_by('date')
     event_attendances = list()
