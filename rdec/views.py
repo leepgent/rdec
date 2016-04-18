@@ -12,8 +12,6 @@ from django.conf import settings
 
 from rdec.models import EventRole, Event, LeagueMemberEventAttending
 
-_RECENT_CUTOFF_SECS = settings.RECENT_EVENT_CUTOFF_DAYS * 24 * 60 * 60
-
 
 class _EventAndAttendance(object):
     def __init__(self, event):
@@ -29,13 +27,15 @@ def personal_dashboard(request):
     # for every future event:
     # show my attendance info
 
+    recency_cutoff_secs = settings.RECENT_EVENT_CUTOFF_DAYS * 24 * 60 * 60
+
     events = Event.objects.filter(date__gt=now).order_by('date')
     event_attendances = list()
 
     for event in events:
         b = _EventAndAttendance(event)
         elapsed = (now - event.last_modified)
-        b.is_recent = elapsed.total_seconds() < _RECENT_CUTOFF_SECS
+        b.is_recent = elapsed.total_seconds() < recency_cutoff_secs
         try:
             b.response = event.leaguemembereventattending_set.get(user=user)
         except LeagueMemberEventAttending.DoesNotExist:
@@ -45,7 +45,8 @@ def personal_dashboard(request):
 
     context = {
         'roles': EventRole.objects.all(),
-        'event_attendances': event_attendances
+        'event_attendances': event_attendances,
+        'recency_cutoff': settings.RECENT_EVENT_CUTOFF_DAYS
     }
 
     return render(request, 'rdec/personaldashboard.html', context)

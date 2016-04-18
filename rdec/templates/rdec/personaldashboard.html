@@ -6,7 +6,7 @@
     <p>For any event you will attend, change the drop-down on the right to the role you will be attending as.</p>
     <p>If you can't make an event, leave it as 'no info'. You can choose 'not available' if you want to be absolutely sure
     everyone will leave you alone on the day.</p>
-    <p>Recently added or changed events are highlighted in blue.</p>
+    <p>Events added or changed within the last {{ recency_cutoff }} days are highlighted in blue.</p>
 
     <div class="table-responsive">
             <table class="table table-hover table-condensed">
@@ -16,6 +16,7 @@
             <th>Date</th>
             <th>Location</th>
             <th>Attending As</th>
+            <th>test ignore</th>
         </tr>
         </thead>
         <tbody>
@@ -41,6 +42,7 @@
             {% endfor %}
             </select>
         </td>
+        <td>{{ event_attendance.event.last_modified|date:"D d F Y, f a"  }}</td>
         </tr>
     {% endfor %}
 
