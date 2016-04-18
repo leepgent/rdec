@@ -6,6 +6,7 @@ class Event(models.Model):
     name = models.CharField(max_length=100)
     location = models.CharField(max_length=100)
     date = models.DateTimeField()
+    last_modified = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return '{} at {} on {}'.format(self.name, self.location, self.date)

@@ -3,6 +3,10 @@
 <h1>Roller Derby Event Coordinator</h1>
     <h2>Upcoming Events for {{ user.first_name }}</h2>
 
+    <p>For any event you will attend, change the drop-down on the right to the role you will be attending as.</p>
+    <p>If you can't make an event, leave it as 'no info'. You can choose 'not available' if you want to be absolutely sure
+    everyone will leave you alone on the day.</p>
+    <p>Recently added or changed events are highlighted in blue.</p>
 
     <div class="table-responsive">
             <table class="table table-hover table-condensed">
@@ -15,18 +19,18 @@
         </tr>
         </thead>
         <tbody>
-    {% for event_attendence in event_attendences %}
-        <tr>
-        <td>{{ event_attendence.event.name }}</td>
-        <td>{{ event_attendence.event.date|date:"D d F Y, f a" }}</td>
-        <td>{{ event_attendence.event.location }}</td>
+    {% for event_attendance in event_attendances %}
+        <tr {% if event_attendance.is_recent %}class="info"{% endif %}>
+        <td>{{ event_attendance.event.name }}</td>
+        <td>{{ event_attendance.event.date|date:"D d F Y, f a" }}</td>
+        <td>{{ event_attendance.event.location }}</td>
         <td>
-            <select title='Attending' id="{{ event_attendence.event.id }}" class='attending_changer'>
+            <select title='Attending' id="{{ event_attendance.event.id }}" class='attending_changer'>
             <option value="null">(no info)</option>
             {% for role in roles %}
                 <option value="{{ role.id }}"
-                        {% if event_attendence.response %}
-                            {% if role.id == event_attendence.response.role_id %}
+                        {% if event_attendance.response %}
+                            {% if role.id == event_attendance.response.role_id %}
                                 selected
                             {% endif %}
 

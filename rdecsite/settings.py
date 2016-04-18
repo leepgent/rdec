@@ -133,3 +133,4 @@ LOGIN_URL = '/login/'
 
 
 LEAGUE_NAME = os.environ.get('RDEC_LEAGUE_NAME', 'Default City Derby')
+RECENT_EVENT_CUTOFF_DAYS = os.environ.get('RDEC_RECENT_EVENT_CUTOFF_DAYS', 10)

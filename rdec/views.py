@@ -8,14 +8,19 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
 from django.views.generic import View
+from django.conf import settings
 
 from rdec.models import EventRole, Event, LeagueMemberEventAttending
 
+_RECENT_CUTOFF_SECS = settings.RECENT_EVENT_CUTOFF_DAYS * 24 * 60 * 60
 
-class _EventAndAttendence(object):
+
+class _EventAndAttendance(object):
     def __init__(self, event):
         self.event = event
         self.response = None
+        self.is_recent = False
+
 
 @login_required
 def personal_dashboard(request):
@@ -25,22 +30,22 @@ def personal_dashboard(request):
     # show my attendance info
 
     events = Event.objects.filter(date__gt=now).order_by('date')
-    event_attendences = list()
+    event_attendances = list()
 
     for event in events:
-        b = _EventAndAttendence(event)
-
+        b = _EventAndAttendance(event)
+        elapsed = (now - event.last_modified)
+        b.is_recent = elapsed.total_seconds() < _RECENT_CUTOFF_SECS
         try:
             b.response = event.leaguemembereventattending_set.get(user=user)
         except LeagueMemberEventAttending.DoesNotExist:
             pass
 
-        event_attendences.append(b)
-
+        event_attendances.append(b)
 
     context = {
         'roles': EventRole.objects.all(),
-        'event_attendences': event_attendences
+        'event_attendances': event_attendances
     }
 
     return render(request, 'rdec/personaldashboard.html', context)
