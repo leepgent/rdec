@@ -1,6 +1,5 @@
 {% extends 'rdec/root.html' %}
 {% block body %}
-<h1>Roller Derby Event Coordinator</h1>
     <h2>Upcoming Events for {{ user.first_name }}</h2>
 
     <p>For any event you will attend, change the drop-down on the right to the role you will be attending as.</p>
@@ -9,7 +8,7 @@
     <p>Events added or changed within the last {{ recency_cutoff }} days are highlighted in blue.</p>
 
     <div class="table-responsive">
-            <table class="table table-hover table-condensed">
+            <table class="table table-hover">
         <thead>
         <tr>
             <th>Event</th>
