@@ -134,3 +134,11 @@ LOGIN_URL = '/login/'
 
 LEAGUE_NAME = os.environ.get('RDEC_LEAGUE_NAME', 'Default City Derby')
 RECENT_EVENT_CUTOFF_DAYS = os.environ.get('RDEC_RECENT_EVENT_CUTOFF_DAYS', 10)
+
+EMAIL_HOST = 'smtp.sendgrid.net'
+EMAIL_HOST_USER = os.environ.get('SENDGRID_USERNAME')
+EMAIL_HOST_PASSWORD = os.environ.get('SENDGRID_PASSWORD')
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
+DEFAULT_FROM_EMAIL = 'harlots-rdec@roller-derby.rocks'
