@@ -6,6 +6,7 @@ from . import models
 @admin.register(models.Event)
 class EventAdmin(admin.ModelAdmin):
     list_filter = ['location', 'date']
+    ordering = ['date']
 
 
 @admin.register(models.EventRole)
