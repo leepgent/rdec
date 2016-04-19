@@ -206,3 +206,53 @@ def eventdetails(request, event_slug, event_id):
         'eventmap': eventmap
     }
     return render(request, 'rdec/eventdetails.html', context)
+
+
+class ProfileView(View):
+    def get(self, request):
+        return render(request, 'rdec/profile.html')
+
+    def post(self, request):
+        user = request.user
+        changed = False
+
+        if 'change_name' in request.POST:
+            new_name = request.POST['change_name']
+            if new_name:
+                existing = User.objects.filter(first_name=new_name).exists()
+                if existing:
+                    messages.warning(request, 'The name you supplied has already been used!')
+                else:
+                    user.first_name = new_name
+                    changed = True
+        if 'change_mail_1' in request.POST and 'change_mail_2' in request.POST:
+            m1 = request.POST['change_mail_1']
+            m2 = request.POST['change_mail_2']
+            if m1 and m2:
+                if m1 != m2:
+                    messages.warning(request, 'The email addresses provided did not match!')
+                else:
+                    existing = User.objects.filter(email=m1).exists()
+                    if existing:
+                        messages.warning(request, 'The email address you supplied has already been used!')
+                    else:
+                        user.email = m1
+                        user.username = m1
+                        changed = True
+
+        if 'change_password_1' in request.POST and 'change_password_2' in request.POST:
+            p1 = request.POST['change_password_1']
+            p2 = request.POST['change_password_2']
+            if p1 and p2:
+                if p1 != p2:
+                    messages.warning(request, 'The passwords provided did not match!')
+                else:
+                    user.set_password(p1)
+                    changed = True
+
+        if changed:
+            user.save()
+            messages.info(request, 'Profile Saved!')
+
+        return render(request, 'rdec/profile.html')
+

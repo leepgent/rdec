@@ -1,0 +1,30 @@
+{% extends 'rdec/root.html' %}
+{% block body %}
+    <h2>Profile for {{ user.first_name }}</h2>
+    <form method="post">
+    {% csrf_token %}
+    <div class="form-group">
+    <label for="change_name">Change Name</label>
+    <input type="text" class="form-control" id="change_name" name="change_name" placeholder="{{ user.first_name }}">
+  </div>
+
+  <div class="form-group">
+    <label for="change_mail_1">Change Email Address</label>
+    <input type="email" class="form-control" id="change_mail_1" name="change_mail_1" placeholder="{{ user.email }}">
+  </div>
+        <div class="form-group">
+    <label for="change_mail_2">Confirm Change Email Address</label>
+    <input type="email" class="form-control" id="change_mail_2" name="change_mail_2" placeholder="{{ user.email }}">
+  </div>
+  <div class="form-group">
+    <label for="change_password_1">Change Password</label>
+    <input type="password" class="form-control" id="change_password_1" name="change_password_1" placeholder="Password">
+  </div>
+        <div class="form-group">
+    <label for="change_password_2">Confirm Change Password</label>
+    <input type="password" class="form-control" id="change_password_2" name="change_password_2" placeholder="Password">
+  </div>
+
+  <button type="submit" class="btn btn-default">Submit</button>
+</form>
+{% endblock %}
