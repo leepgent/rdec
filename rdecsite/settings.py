@@ -141,4 +141,4 @@ EMAIL_HOST_PASSWORD = os.environ.get('SENDGRID_PASSWORD')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
-DEFAULT_FROM_EMAIL = 'harlots-rdec@roller-derby.rocks'
+DEFAULT_FROM_EMAIL = os.environ.get('RDEC_MAIL_FROM_ADDRESS')

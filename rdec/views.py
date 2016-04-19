@@ -141,7 +141,7 @@ class ChangeAttendingView(View):
         status = EventRole.objects.get(pk=new_status)
 
         LeagueMemberEventAttending.objects.filter(user=user, event=event).delete()  # TODO: fix this bug properly!
-        
+
         thing = LeagueMemberEventAttending(user=user, role=status, event=event)
         thing.save()
         return HttpResponse()
