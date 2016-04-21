@@ -5,6 +5,7 @@ import django.contrib.auth.views
 from . import views
 urlpatterns = [
     url(r'^$', views.personal_dashboard, name='home'),
+    url(r'^favicon.ico$', views.favicon, name='favicon'),
     url(r'^signup/', views.SignupView.as_view(), name='signup'),
     url(r'^login/', views.LoginView.as_view(), name='hello'),
     url(r'^logout/', views.logoutview, name='bye'),

@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.core.validators import validate_email
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, FileResponse
 from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
 from django.views.generic import View
@@ -256,3 +256,6 @@ class ProfileView(View):
 
         return render(request, 'rdec/profile.html')
 
+
+def favicon(request):
+    return FileResponse(open('static/rainbow.png', 'rb'), content_type='image/png')
