@@ -28,7 +28,8 @@ SECRET_KEY = 'ah_f*z03ogus3mzgno)a)(!0!&hd$0(r*$ld78tqmtdi-t96%%'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = (os.environ.get('RDEC_DEBUG', 'False') == 'True')
 
-ALLOWED_HOSTS = []
+
+ALLOWED_HOSTS = os.environ.get('RDEC_ALLOWED_HOSTS', '').split(',')
 
 
 # Application definition
