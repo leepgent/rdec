@@ -1,11 +1,13 @@
 from django.conf.urls import url
 from django.contrib.auth.decorators import login_required
 import django.contrib.auth.views
+from django.views.generic import RedirectView
+from django.contrib.staticfiles.templatetags.staticfiles import static as static_url
 
 from . import views
 urlpatterns = [
     url(r'^$', views.personal_dashboard, name='home'),
-    url(r'^favicon.ico$', views.favicon, name='favicon'),
+    url(r'^favicon\.ico$', RedirectView.as_view(url=static_url('rainbow.png'), permanent=True)),
     url(r'^signup/', views.SignupView.as_view(), name='signup'),
     url(r'^login/', views.LoginView.as_view(), name='hello'),
     url(r'^logout/', views.logoutview, name='bye'),

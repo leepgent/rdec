@@ -256,6 +256,3 @@ class ProfileView(View):
 
         return render(request, 'rdec/profile.html')
 
-
-def favicon(request):
-    return FileResponse(open('static/rainbow.png', 'rb'), content_type='image/png')
