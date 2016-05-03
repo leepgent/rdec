@@ -1,3 +1,4 @@
+from datetime import timedelta
 from django.contrib import messages
 from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.decorators import login_required
@@ -157,9 +158,10 @@ class _EventSummary(object):
 @login_required
 def eventlist(request):
     now = timezone.now()
-    user = request.user
 
-    events = Event.objects.filter(date__gt=now).order_by('date')
+    then = now - timedelta(days=1)
+
+    events = Event.objects.filter(date__gt=then).order_by('date')
     roles = EventRole.objects.all()
 
     eventlist = list()
