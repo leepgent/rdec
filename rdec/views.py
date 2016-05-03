@@ -25,13 +25,15 @@ class _EventAndAttendance(object):
 @login_required
 def personal_dashboard(request):
     now = timezone.now()
+    then = now - timedelta(days=1)
     user = request.user
+
     # for every future event:
     # show my attendance info
 
     recency_cutoff_secs = float(settings.RECENT_EVENT_CUTOFF_DAYS) * 24 * 60 * 60
 
-    events = Event.objects.filter(date__gt=now).order_by('date')
+    events = Event.objects.filter(date__gt=then).order_by('date')
     event_attendances = list()
 
     for event in events:
