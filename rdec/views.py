@@ -1,7 +1,6 @@
 from django.contrib import messages
-from django.contrib.auth import logout, authenticate, login
+from django.contrib.auth import logout, authenticate, login, get_user_model
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.core.validators import validate_email
 from django.http import HttpResponseRedirect, HttpResponse, FileResponse
@@ -81,16 +80,18 @@ class SignupView(View):
             messages.warning(request, 'Your passwords did not match!')
             return render(request, 'rdec/signup.html')
 
+
+        User = get_user_model()
         if User.objects.filter(email=email).exists():
             messages.warning(request, 'This e-mail address is already in use!')
             return render(request, 'rdec/signup.html')
 
-        if User.objects.filter(first_name=name).exists():
+        if User.objects.filter(name=name).exists():
             messages.warning(request, 'This name address is already in use!')
             return render(request, 'rdec/signup.html')
 
-        new_user = User.objects.create_user(email, email=email, password=password1)
-        new_user.first_name = name
+        new_user = User.objects.create_user(email, password=password1)
+        new_user.name = name
         new_user.save()
 
         new_user = authenticate(username=email, password=password1)
@@ -213,17 +214,18 @@ class ProfileView(View):
         return render(request, 'rdec/profile.html')
 
     def post(self, request):
+        User = get_user_model()
         user = request.user
         changed = False
 
         if 'change_name' in request.POST:
             new_name = request.POST['change_name']
             if new_name:
-                existing = User.objects.filter(first_name=new_name).exists()
+                existing = User.objects.filter(name=new_name).exists()
                 if existing:
                     messages.warning(request, 'The name you supplied has already been used!')
                 else:
-                    user.first_name = new_name
+                    user.name = new_name
                     changed = True
         if 'change_mail_1' in request.POST and 'change_mail_2' in request.POST:
             m1 = request.POST['change_mail_1']

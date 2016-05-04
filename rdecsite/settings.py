@@ -37,6 +37,7 @@ ALLOWED_HOSTS = os.environ.get('RDEC_ALLOWED_HOSTS', '').split()
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
+    'accounts',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
@@ -143,3 +144,4 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
 DEFAULT_FROM_EMAIL = os.environ.get('RDEC_MAIL_FROM_ADDRESS')
+AUTH_USER_MODEL = 'accounts.User'

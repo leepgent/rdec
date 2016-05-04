@@ -16,7 +16,7 @@ class EventRoleAdmin(admin.ModelAdmin):
 
 @admin.register(models.LeagueMemberEventAttending)
 class LeagueMemberEventAttendingAdmin(admin.ModelAdmin):
-    list_filter = ['user__first_name']
+    list_filter = ['user__name']
 
 
 @admin.register(models.VisitorEventAttending)
