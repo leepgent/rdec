@@ -1,3 +1,4 @@
+from datetime import timedelta
 from django.contrib import messages
 from django.contrib.auth import logout, authenticate, login, get_user_model
 from django.contrib.auth.decorators import login_required
@@ -23,13 +24,15 @@ class _EventAndAttendance(object):
 @login_required
 def personal_dashboard(request):
     now = timezone.now()
+    then = now - timedelta(days=1)
     user = request.user
+
     # for every future event:
     # show my attendance info
 
     recency_cutoff_secs = float(settings.RECENT_EVENT_CUTOFF_DAYS) * 24 * 60 * 60
 
-    events = Event.objects.filter(date__gt=now).order_by('date')
+    events = Event.objects.filter(date__gt=then).order_by('date')
     event_attendances = list()
 
     for event in events:
@@ -158,9 +161,10 @@ class _EventSummary(object):
 @login_required
 def eventlist(request):
     now = timezone.now()
-    user = request.user
 
-    events = Event.objects.filter(date__gt=now).order_by('date')
+    then = now - timedelta(days=1)
+
+    events = Event.objects.filter(date__gt=then).order_by('date')
     roles = EventRole.objects.all()
 
     eventlist = list()
