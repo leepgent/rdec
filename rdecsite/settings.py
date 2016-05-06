@@ -35,6 +35,7 @@ ALLOWED_HOSTS = os.environ.get('RDEC_ALLOWED_HOSTS', '').split()
 # Application definition
 
 INSTALLED_APPS = [
+    'storages',
     'django.contrib.admin',
     'django.contrib.auth',
     'accounts',
@@ -129,7 +130,6 @@ STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
 
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
 LOGIN_URL = '/login/'
 
@@ -145,3 +145,10 @@ EMAIL_USE_TLS = True
 
 DEFAULT_FROM_EMAIL = os.environ.get('RDEC_MAIL_FROM_ADDRESS')
 AUTH_USER_MODEL = 'accounts.User'
+
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
+
+STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
