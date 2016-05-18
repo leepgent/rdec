@@ -19,9 +19,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
-
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'ah_f*z03ogus3mzgno)a)(!0!&hd$0(r*$ld78tqmtdi-t96%%'
 
@@ -31,11 +28,38 @@ DEBUG = (os.environ.get('RDEC_DEBUG', 'False') == 'True')
 
 ALLOWED_HOSTS = os.environ.get('RDEC_ALLOWED_HOSTS', '').split()
 
+AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID', '')
 
-# Application definition
 
-INSTALLED_APPS = [
-    'storages',
+INSTALLED_APPS = []
+MIDDLEWARE_CLASSES = []
+
+# Storage. Use S3 or fall back to Whitenoise; undefined behaviour for media files in that case!
+if AWS_ACCESS_KEY_ID:
+    INSTALLED_APPS.extend([
+        'storages'
+    ])
+
+    AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+    AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
+    AWS_MEDIA_BUCKET_NAME = os.environ.get('AWS_MEDIA_BUCKET_NAME')
+
+    AWS_S3_FILE_OVERWRITE = False
+
+    DEFAULT_FILE_STORAGE = 's3storages.MediaRootS3BotoStorage'
+    STATICFILES_STORAGE = 's3storages.StaticRootS3BotoStorage'
+
+else:
+    INSTALLED_APPS.extend([
+        'whitenoise.runserver_nostatic',
+    ])
+    MIDDLEWARE_CLASSES.extend([
+        'whitenoise.middleware.WhiteNoiseMiddleware'
+    ])
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+
+INSTALLED_APPS.extend([
     'django.contrib.admin',
     'django.contrib.auth',
     'accounts',
@@ -44,9 +68,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rdec'
-]
+])
 
-MIDDLEWARE_CLASSES = [
+
+MIDDLEWARE_CLASSES.extend([
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -55,7 +80,8 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-]
+])
+
 
 ROOT_URLCONF = 'rdecsite.urls'
 
@@ -146,9 +172,4 @@ EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = os.environ.get('RDEC_MAIL_FROM_ADDRESS')
 AUTH_USER_MODEL = 'accounts.User'
 
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
-AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
-AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
 
-STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
