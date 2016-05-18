@@ -262,3 +262,36 @@ class ProfileView(View):
 
         return render(request, 'rdec/profile.html')
 
+
+def format_ical_date_string(dt):
+    return dt.strftime('%Y%m%dT%H%M%SZ')
+
+EVENT_DURATION = timezone.timedelta(0, 0, 0, 0, 0, 2)
+
+
+def ical(request):
+    resp = HttpResponse(content_type='text/calendar')
+
+    resp.write('BEGIN:VCALENDAR\n')
+    resp.write('VERSION:2.0\n')
+    resp.write('PRODID:-//RDEC//NONSGML v1.0//EN\n')
+    now = timezone.now()
+
+    then = now - timedelta(days=1)
+
+    events = Event.objects.filter(date__gt=then).order_by('date')
+    for e in events:
+
+        end = e.date + EVENT_DURATION
+
+        resp.write('BEGIN:VEVENT\n')
+        resp.write('UID:{}@{}\n'.format(e.pk, request.get_host()))
+        resp.write('DTSTAMP:{}\n'.format(format_ical_date_string(e.last_modified)))
+        resp.write('DTSTART:{}\n'.format(format_ical_date_string(e.date)))
+        resp.write('DTEND:{}\n'.format(format_ical_date_string(end)))
+        resp.write('SUMMARY:{} ({})\n'.format(e.name, e.location))
+
+        resp.write('END:VEVENT\n')
+
+    resp.write('END:VCALENDAR\n')
+    return resp
