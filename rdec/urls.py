@@ -7,7 +7,7 @@ from django.contrib.staticfiles.templatetags.staticfiles import static as static
 from . import views
 urlpatterns = [
     url(r'^$', views.personal_dashboard, name='home'),
-    url(r'^favicon\.ico$', RedirectView.as_view(url=static_url('rainbow.png'), permanent=True)),
+    url(r'^favicon\.ico$', RedirectView.as_view(url=static_url('rainbow.png').replace('%', '%%'), permanent=True)),
     url(r'^calendar\.ics$', views.ical),
     url(r'^signup/', views.SignupView.as_view(), name='signup'),
     url(r'^login/', views.LoginView.as_view(), name='hello'),

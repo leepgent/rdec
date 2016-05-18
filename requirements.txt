@@ -1,5 +1,7 @@
+boto==2.40.0
 dj-database-url==0.4.1
 Django==1.9.6
-gunicorn==19.4.5
+django-storages==1.4.1
+gunicorn==19.5.0
 psycopg2==2.6.1
-whitenoise==3.0
+whitenoise==3.1
