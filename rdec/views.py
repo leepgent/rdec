@@ -68,6 +68,7 @@ class SignupView(View):
 
     def post(self, request):
         email = request.POST['email_field']
+        email = email.lower().strip()
         name = request.POST['name_field']
         password1 = request.POST['password1_field']
         password2 = request.POST['password2_field']
@@ -82,7 +83,6 @@ class SignupView(View):
         if password1 != password2:
             messages.warning(request, 'Your passwords did not match!')
             return render(request, 'rdec/signup.html')
-
 
         User = get_user_model()
         if User.objects.filter(email=email).exists():
@@ -110,6 +110,8 @@ class LoginView(View):
     def post(self, request):
         username = request.POST['username_field']
         password = request.POST['password_field']
+
+        username = username.lower().strip()
 
         user = authenticate(username=username, password=password)
         if user is not None:
