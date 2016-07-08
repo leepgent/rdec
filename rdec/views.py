@@ -308,5 +308,6 @@ def response_stats(request):
         count = LeagueMemberEventAttending.objects.filter(user=user).count()
         payload[user] = count
 
+    total_available = Event.objects.all().count()
     stuff = sorted(payload.items(), key=lambda x: x[1])
-    return render(request, 'rdec/response-stats.html', {'stats': stuff})
+    return render(request, 'rdec/response-stats.html', {'stats': stuff, 'total': total_available})
