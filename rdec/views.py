@@ -297,3 +297,16 @@ def ical(request):
 
     resp.write('END:VCALENDAR\n')
     return resp
+
+
+@login_required
+def response_stats(request):
+    # For each user, count how many responses they've ever had
+    User = get_user_model()
+    payload = { }
+    for user in User.objects.all():
+        count = LeagueMemberEventAttending.objects.filter(user=user).count()
+        payload[user] = count
+
+    stuff = sorted(payload.items(), key=lambda x: x[1])
+    return render(request, 'rdec/response-stats.html', {'stats': stuff})

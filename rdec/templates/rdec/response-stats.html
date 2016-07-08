@@ -1,0 +1,27 @@
+{% extends 'rdec/root.html' %}
+{% block body %}
+
+    <h2>Response Stats</h2>
+    <p>Please note that this is only a guide -- occasionally users will choose 'no data' to indicate non attendance
+    in which case they will have no response recorded (a false negative!)</p>
+    <div class="table-responsive">
+            <table class="table table-hover">
+        <thead>
+        <tr>
+        <th>Name</th>
+        <th>E-mail</th>
+        <th>Response Count</th>
+    </tr>
+    </thead>
+                <tbody>
+                {% for thing in stats %}
+                    <tr>
+                    <td>{{ thing.0.name }}</td>
+                    <td>{{ thing.0.email }}</td>
+                    <td>{{ thing.1 }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+    </table>
+    </div>
+{% endblock %}

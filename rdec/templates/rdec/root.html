@@ -43,6 +43,7 @@
                     <li><a href="{% url 'profile' %}">My Profile</a></li>
                     {% if user.is_staff %}
                         <li><a href="{% url 'eventlist' %}">All Events</a></li>
+                        <li><a href="{% url 'response-stats' %}">Response Stats</a></li>
                         <li><a href="{% url 'admin:index' %}">Admin</a></li>
                     {% endif %}
 

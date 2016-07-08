@@ -15,6 +15,7 @@ urlpatterns = [
     url(r'^profile/', login_required(views.ProfileView.as_view()), name='profile'),
     url(r'^change_attending/', login_required(views.ChangeAttendingView.as_view()), name='change_attending'),
     url(r'^events/$', views.eventlist, name='eventlist'),
+    url(r'^response-stats/$', views.response_stats, name='response-stats'),
     url(r'^events/(?P<event_slug>[\w-]+)-(?P<event_id>\w+)/', views.eventdetails, name='eventdetails'),
 
     url(r'^user/password/reset/$', django.contrib.auth.views.password_reset,
