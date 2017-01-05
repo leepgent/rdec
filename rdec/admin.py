@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.conf import settings
 
 from . import models
 
@@ -22,3 +23,8 @@ class LeagueMemberEventAttendingAdmin(admin.ModelAdmin):
 @admin.register(models.VisitorEventAttending)
 class VisitorEventAttendingAdmin(admin.ModelAdmin):
     list_filter = ['name']
+
+
+admin.site.site_header = f'RDEC Administration :: {settings.LEAGUE_NAME}'
+admin.site.site_title = f'RDEC Administration :: {settings.LEAGUE_NAME}'
+admin.site.index_title = 'Add or remove events, roles, visiting attendees or tweak the user account list!'

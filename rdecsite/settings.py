@@ -20,7 +20,7 @@ PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'ah_f*z03ogus3mzgno)a)(!0!&hd$0(r*$ld78tqmtdi-t96%%'
+SECRET_KEY = os.environ.get('RDEC_SECRET_KEY', 'ah_f*z03ogus3mzgno)a)(!0!&hd$0(r*$ld78tqmtdi-t96%%')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = (os.environ.get('RDEC_DEBUG', 'False') == 'True')
@@ -32,7 +32,7 @@ AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID', '')
 
 
 INSTALLED_APPS = []
-MIDDLEWARE_CLASSES = []
+MIDDLEWARE = []
 
 # Storage. Use S3 or fall back to Whitenoise; undefined behaviour for media files in that case!
 if AWS_ACCESS_KEY_ID:
@@ -53,7 +53,7 @@ else:
     INSTALLED_APPS.extend([
         'whitenoise.runserver_nostatic',
     ])
-    MIDDLEWARE_CLASSES.extend([
+    MIDDLEWARE.extend([
         'whitenoise.middleware.WhiteNoiseMiddleware'
     ])
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
@@ -70,14 +70,12 @@ INSTALLED_APPS.extend([
     'rdec'
 ])
 
-
-MIDDLEWARE_CLASSES.extend([
+MIDDLEWARE.extend([
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ])
