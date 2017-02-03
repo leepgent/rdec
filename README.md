@@ -9,30 +9,35 @@ monitor and manage the attendence of their members to events. It aims to provide
 ### Installation
 A Python virtual environment - either virtualenv or conda - is recommended.
 
-    conda create -n rdecenv python=2.7
-    source activate rdecenv
-    pip install --use-wheel -r requirements.txt
+````conda create -n rdecenv python=3.6.0
+source activate rdecenv
+pip install --use-wheel -r requirements.txt
+````
 
 ### Configuration
 Major configuration is via environment variables.
 
-    DATABASE_URL='sqlite:///rdec.db'
-    DATABASE_URL='postgres://rdecuser:rdecpass@localhost:5432/rdecdb'
-    RDEC_ALLOWED_HOSTS='.roller-derby.rocks rdec.herokuapp.com'
-    RDEC_DEBUG=False
-    RDEC_LEAGUE_NAME='Hellfire Harlots'
-    RDEC_MAIL_FROM_ADDRESS='harlots-rdec@roller-derby.rocks'
-    RDEC_RECENT_EVENT_CUTOFF_DAYS=7
+````DATABASE_URL='sqlite:///rdec.db'
+DATABASE_URL='postgres://rdecuser:rdecpass@localhost:5432/rdecdb'
+RDEC_ALLOWED_HOSTS='.roller-derby.rocks rdec.herokuapp.com'
+RDEC_DEBUG=False
+RDEC_LEAGUE_NAME='Hellfire Harlots'
+RDEC_MAIL_FROM_ADDRESS='harlots-rdec@roller-derby.rocks'
+RDEC_RECENT_EVENT_CUTOFF_DAYS=7
+````
 
 ### Initial Setup
-    python manage.py migrate
-    python manage.py collectstatic --noinput
-    python manage.py createsuperuser
+````python manage.py migrate
+python manage.py collectstatic --noinput
+python manage.py createsuperuser
+````
 
 ### Running
 A Python WSGI server is required - gunicorn is recommended.
 
-    gunicorn rdecsite.wsgi
+````
+gunicorn rdecsite.wsgi
+````
 
 ### Completing Setup
 Browse to http://*host*:*port*, log in with the administrative superuser and whack 'Admin' in the navigation bar.
